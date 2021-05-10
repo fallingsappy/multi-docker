@@ -1,0 +1,22 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t fallingsappy/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true fallingsappy/react-test npm test
+
+after_success:
+  - docker build -t fallingsappy/multi-client ./client
+  - docker build -t fallingsappy/multi-nginx ./nginx
+  - docker build -t fallingsappy/multi-server ./server
+  - docker build -t fallingsappy/multi-worker ./worker
+  # Log in to the docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # Take those images and push them to docker hub
+  - docker push fallingsappy/multi-client
+  - docker push fallingsappy/multi-nginx
+  - docker push fallingsappy/multi-server
+  - docker push fallingsappy/multi-worker
