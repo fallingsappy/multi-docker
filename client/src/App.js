@@ -8,7 +8,7 @@ function App() {
     <Router>
       <div className="App">
         <header className="App-header">
-          <Link style={{ color: 'white' }} to="/">Home</Link>
+          <Link style={{ color: 'white' }} to="/">Fib values</Link>
           <Link style={{ color: 'white' }} to="/otherpage">Other Page</Link>
         </header>
         <div>
